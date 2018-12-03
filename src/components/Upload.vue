@@ -2,81 +2,55 @@
   <div class="page-content-container">
     <el-form  label-width="100px">
       <el-row>
-        <el-col :span="24">
-          <h3>选择上传文件：</h3>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24" type="flex">
-            <el-upload  :action="UploadUrl()"  :on-success="UploadSuccess">
-              <el-button size="small" type="primary" >点击上传</el-button>
+      <el-upload  :action="UploadUrl()"  :on-success="UploadSuccess">
+              <v-btn
+              :loading="loading3"
+              :disabled="loading3"
+              color="blue-grey"
+              class="white--text"
+              @click="loader = 'loading3'"
+            >
+              选择上传文件
+              <v-icon right dark>cloud_upload</v-icon>
+            </v-btn>
             </el-upload>
-        </el-col>
-        </el-row>
+
+      </el-row>
 
       <el-row>
         <el-col :span="24">
-
-       <el-table :key='tableKey' :data="list" border fit highlight-current-row
-        width= "100%" max-height= "580" >
-        <el-table-column align="center" :label="'行号'" width="80"   prop="RowIndex">
-            <template slot-scope="scope">
-            <span>{{scope.row.RowIndex}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'磅单编号'" width="180"   prop="NumberFlag">
-            <template slot-scope="scope">
-            <span>{{scope.row.NumberFlag}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'首次称重日期'" width="140"   prop="Date">
-            <template slot-scope="scope">
-            <span>{{scope.row.Date}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'毛重时间'" width="140"   prop="Time">
-            <template slot-scope="scope">
-            <span>{{scope.row.Time}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'车号'" width="100"   prop="CarNumber">
-            <template slot-scope="scope">
-            <span>{{scope.row.CarNumber}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'货物名称'" width="100"   prop="ShopNumber">
-            <template slot-scope="scope">
-            <span>{{scope.row.ShopNumber}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'毛重'" width="80"   prop="GrossWeight">
-            <template slot-scope="scope">
-            <span>{{scope.row.GrossWeight}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'皮重'" width="80"   prop="TareWeight">
-            <template slot-scope="scope">
-            <span>{{scope.row.TareWeight}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'净重'" width="80"   prop="NetWeight">
-            <template slot-scope="scope">
-            <span>{{scope.row.NetWeight}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'单价'" width="80"   prop="UnitPrice">
-            <template slot-scope="scope">
-            <span>{{scope.row.UnitPrice}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column align="center" :label="'收货单位'" prop="TakeDept">
-            <template slot-scope="scope">
-            <span>{{scope.row.TakeDept}}</span>
-            </template>
-        </el-table-column>
-
-     </el-table>
-     </el-col>
+<v-app id="inspire">
+    <div>
+      <v-data-table
+        :headers="headers"
+        :items="list"
+        :rows-per-page-items="rowsPerPageItems"
+        :search="search"
+        :pagination.sync="pagination"
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.RowIndex }}</td>
+          <td class="text-xs-left">{{ props.item.NumberFlag }}</td>
+          <td class="text-xs-left">{{ props.item.Date }}</td>
+          <td class="text-xs-left">{{ props.item.Time }}</td>
+          <td class="text-xs-left">{{ props.item.CarNumber }}</td>
+          <td class="text-xs-left">{{ props.item.ShopNumber }}</td>
+          <td class="text-xs-left">{{ props.item.GrossWeight }}</td>
+          <td class="text-xs-left">{{ props.item.TareWeight }}</td>
+          <td class="text-xs-left">{{ props.item.NetWeight }}</td>
+          <td class="text-xs-left">{{ props.item.VendorNetWeight }}</td>
+          <td class="text-xs-left">{{ props.item.TakeDept }}</td>
+          <td class="text-xs-left">{{ props.item.SendOutDept }}</td>
+          <td class="text-xs-left">{{ props.item.UnitPrice }}</td>
+        </template>
+      </v-data-table>
+      <div class="text-xs-center pt-2">
+        <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+      </div>
+    </div>
+  </v-app>
+      </el-col>
     </el-row>
 
     </el-form>
@@ -92,14 +66,41 @@ export default {
   name: 'Upload',
   data () {
     return {
-      tableKey: 1,
-      list: null
+      list: [],
+      rowsPerPageItems: [ 15, 25, 100, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 } ],
+      search: '',
+      pagination: {},
+      selected: [],
+      headers: [
+        {text: '', width: 40, align: 'left', sortable: false, value: 'RowIndex'},
+        { text: '磅单编号', width: 120, sortable: false, value: 'NumberFlag' },
+        { text: '首次称重日期', width: 160, sortable: false, value: 'Date' },
+        { text: '毛重时间', width: 140, sortable: false, value: 'Time' },
+        { text: '车号', width: 120, sortable: false, value: 'CarNumber' },
+        { text: '货物名称', width: 140, sortable: false, value: 'ShopNumber' },
+        { text: '毛重', width: 80, sortable: false, value: 'GrossWeight' },
+        { text: '皮重', width: 80, sortable: false, value: 'TareWeight' },
+        { text: '净重', width: 80, sortable: false, value: 'NetWeight' },
+        { text: '收货单位', width: 120, sortable: false, value: 'TakeDept' },
+        { text: '发货单位', width: 120, sortable: false, value: 'SendOutDept' },
+        { text: '单价', value: 'UnitPrice' }
+      ]
     }
   },
   components: {
   },
   created () {
+    this.pagination.rowsPerPage = 15
     // this.post_test()
+  },
+  computed: {
+    pages () {
+      if (this.pagination.rowsPerPage == null ||
+        this.pagination.totalItems == null
+      ) return 0
+
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+    }
   },
   methods: {
     UploadUrl () {
@@ -127,8 +128,8 @@ export default {
         })
     },
     UploadSuccess (rsp) {
-      console.log(rsp)
-      this.list = null
+      this.list = rsp
+      this.pagination.totalItems = rsp.length
     }
   }
 }

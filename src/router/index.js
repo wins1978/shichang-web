@@ -3,8 +3,15 @@ import Router from 'vue-router'
 import Upload from '@/components/Upload'
 import Customer from '@/components/Customer'
 import Vuetify from 'vuetify'
+import zhHans from 'vuetify/es5/locale/zh-Hans'
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  lang: {
+    locales: { 'zh-Hans': zhHans },
+    current: 'zh-Hans'
+  }
+})
+
 Vue.use(Router)
 
 export default new Router({
