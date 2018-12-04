@@ -117,7 +117,7 @@ export default {
       var __this = this
       this.axios.get('http://localhost:8080/ping')
         .then(function (response) {
-          // console.log(response)
+          console.log(response)
           __this.msg = response.data
         })
         .catch(function (error) {
