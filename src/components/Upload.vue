@@ -4,11 +4,8 @@
       <el-row>
       <el-upload  :action="UploadUrl()"  :on-success="UploadSuccess">
               <v-btn
-              :loading="loading3"
-              :disabled="loading3"
               color="blue-grey"
               class="white--text"
-              @click="loader = 'loading3'"
             >
               选择上传文件
               <v-icon right dark>cloud_upload</v-icon>
@@ -20,7 +17,17 @@
       <el-row>
         <el-col :span="24">
 <v-app id="inspire">
-    <div>
+    <v-card>
+      <v-card-title>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="搜索过滤"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
       <v-data-table
         :headers="headers"
         :items="list"
@@ -39,16 +46,16 @@
           <td class="text-xs-left">{{ props.item.GrossWeight }}</td>
           <td class="text-xs-left">{{ props.item.TareWeight }}</td>
           <td class="text-xs-left">{{ props.item.NetWeight }}</td>
-          <td class="text-xs-left">{{ props.item.VendorNetWeight }}</td>
+          <td class="text-xs-left">
+            <v-btn outline small color="indigo">{{ props.item.UnitPrice }}</v-btn>
+          </td>
           <td class="text-xs-left">{{ props.item.TakeDept }}</td>
-          <td class="text-xs-left">{{ props.item.SendOutDept }}</td>
-          <td class="text-xs-left">{{ props.item.UnitPrice }}</td>
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
       </div>
-    </div>
+    </v-card>
   </v-app>
       </el-col>
     </el-row>
@@ -67,23 +74,23 @@ export default {
   data () {
     return {
       list: [],
-      rowsPerPageItems: [ 15, 25, 100, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 } ],
+      rowsPerPageItems: [ 10, 15, 25, 100, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 } ],
       search: '',
       pagination: {},
       selected: [],
       headers: [
-        {text: '', width: 40, align: 'left', sortable: false, value: 'RowIndex'},
-        { text: '磅单编号', width: 120, sortable: false, value: 'NumberFlag' },
-        { text: '首次称重日期', width: 160, sortable: false, value: 'Date' },
-        { text: '毛重时间', width: 140, sortable: false, value: 'Time' },
-        { text: '车号', width: 120, sortable: false, value: 'CarNumber' },
-        { text: '货物名称', width: 140, sortable: false, value: 'ShopNumber' },
-        { text: '毛重', width: 80, sortable: false, value: 'GrossWeight' },
-        { text: '皮重', width: 80, sortable: false, value: 'TareWeight' },
-        { text: '净重', width: 80, sortable: false, value: 'NetWeight' },
-        { text: '收货单位', width: 120, sortable: false, value: 'TakeDept' },
-        { text: '发货单位', width: 120, sortable: false, value: 'SendOutDept' },
-        { text: '单价', value: 'UnitPrice' }
+        {text: '', width: 40, align: 'left', value: 'RowIndex'},
+        { text: '磅单编号', width: 120, value: 'NumberFlag' },
+        { text: '首次称重日期', width: 160, value: 'Date' },
+        { text: '毛重时间', width: 140, value: 'Time' },
+        { text: '车号', width: 120, value: 'CarNumber' },
+        { text: '货物名称', width: 80, value: 'ShopNumber' },
+        { text: '毛重', width: 80, value: 'GrossWeight' },
+        { text: '皮重', width: 80, value: 'TareWeight' },
+        { text: '净重', width: 80, value: 'NetWeight' },
+        { text: '单价', width: 80, value: 'UnitPrice' },
+        { text: '收货单位', value: 'TakeDept' }
+
       ]
     }
   },
