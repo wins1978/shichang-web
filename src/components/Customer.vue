@@ -87,16 +87,11 @@ export default {
   data: () => ({
     dialog: false,
     headers: [
-      {
-        text: 'Dessert (100g serving)',
-        align: 'left',
-        sortable: false,
-        value: 'name'
-      },
-      { text: 'Calories', value: 'calories' },
-      { text: 'Fat (g)', value: 'fat' },
-      { text: 'Carbs (g)', value: 'carbs' },
-      { text: 'Protein (g)', value: 'protein' },
+      { text: '客户名称', width: 120, value: 'name' },
+      { text: '首次称重日期', width: 160, value: 'Date' },
+      { text: '毛重时间', width: 140, value: 'Time' },
+      { text: '车号', width: 120, value: 'CarNumber' },
+      { text: '货物名称', width: 80, value: 'ShopNumber' },
       { text: 'Actions', value: 'name', sortable: false }
     ],
     desserts: [],
