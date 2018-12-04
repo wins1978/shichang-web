@@ -20,7 +20,7 @@
         ></v-text-field>
       </v-card-title>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="600px">
           <v-btn slot="activator" color="primary" dark class="mb-2">新增数据</v-btn>
           <v-card>
             <v-card-title>
@@ -30,7 +30,7 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field :disabled="isNewItem" v-model="editedItem.Vendor" label="客户名称"></v-text-field>
+                    <v-text-field :disabled="isEditItem" v-model="editedItem.Vendor" label="客户名称"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.ContactName" label="联系人"></v-text-field>
@@ -45,7 +45,10 @@
                     <v-text-field :rules="dinamicRules" v-model="editedItem.CostAlert" label="警戒线(元)"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-switch label="是否预警" v-model="editedItem.NeedCostAdvance"></v-switch>
+                    <v-switch
+                      :label="`是否预警: ${editedItem.NeedCostAdvance.toString()}`"
+                      v-model="editedItem.NeedCostAdvance"
+                    ></v-switch>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -103,11 +106,12 @@
 <script>
 export default {
   name: 'Customer',
+  inject: ['reload'],
   data: () => ({
     dialog: false,
     rowsPerPageItems: [ 10, 15, 25, 100, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 } ],
     search: '',
-    isNewItem: true, // 是否新增
+    isEditItem: false, // 是否新增
     errMessage: '',
     pagination: {},
     selected: [],
@@ -130,12 +134,16 @@ export default {
       Vendor: '',
       ContactName: '',
       Tel: '',
+      NeedCostAdvance: false,
+      CostAdvance: 0,
       CostAlert: 0
     },
     defaultItem: {
       Vendor: '',
       ContactName: '',
       Tel: '',
+      NeedCostAdvance: false,
+      CostAdvance: 0,
       CostAlert: 0
     }
   }),
@@ -170,6 +178,7 @@ export default {
         .then(function (response) {
           console.log(response.data)
           __this.desserts = response.data
+          __this.pagination.totalItems = response.data.length
         })
         .catch(function (error) {
           console.log('error:' + error)
@@ -179,7 +188,12 @@ export default {
     editItem (item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.isNewItem = false
+      if (this.editedItem.NeedCostAdvance === 'true') {
+        this.editedItem.NeedCostAdvance = true
+      } else {
+        this.editedItem.NeedCostAdvance = false
+      }
+      this.isEditItem = true
       this.dialog = true
     },
 
@@ -193,7 +207,7 @@ export default {
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
-        this.isNewItem = true
+        this.isEditItem = false
       }, 300)
     },
     // 新增数据
@@ -204,7 +218,9 @@ export default {
         .then(function (response) {
           console.log(response.data)
           if (response.data.code === 0) {
-            __this.desserts.push(__this.editedItem)
+            // __this.desserts.push(__this.editedItem)
+            console.log('添加成功')
+            __this.reload()
           } else {
             __this.errMessage = response.data.msg
           }
@@ -223,6 +239,7 @@ export default {
           console.log(response.data)
           if (response.data.code === 0) {
             __this.desserts.splice(index, 1)
+            __this.pagination.totalItems = __this.desserts.length
           } else {
             __this.errMessage = response.data.msg
           }
@@ -251,7 +268,16 @@ export default {
         })
     },
 
+    reload () {
+      this.initialize()
+    },
+
     save () {
+      if (this.editedItem.NeedCostAdvance === true) {
+        this.editedItem.NeedCostAdvance = 'true'
+      } else {
+        this.editedItem.NeedCostAdvance = 'false'
+      }
       if (this.editedIndex > -1) {
         this.vendor_update(this.editedItem)
       } else {
