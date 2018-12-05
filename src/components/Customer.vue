@@ -30,7 +30,7 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field :disabled="isEditItem" v-model="editedItem.Vendor" label="客户名称"></v-text-field>
+                    <v-text-field :disabled="isEditItem" :rules="requireRules" v-model="editedItem.Vendor" label="*客户名称"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.ContactName" label="联系人"></v-text-field>
@@ -119,6 +119,9 @@ export default {
     dinamicRules: [
       v => /^\d+(\.\d+)?$/.test(v) || '错误的数字格式'
     ],
+    requireRules: [
+      v => !!v || '客户名称不能为空'
+    ],
     headers: [
       { text: '客户名称', width: 160, value: 'Vendor' },
       { text: '联系人', width: 160, value: 'ContactName' },
@@ -168,7 +171,7 @@ export default {
   },
 
   created () {
-    this.pagination.rowsPerPage = 15
+    this.pagination.rowsPerPage = 10
     this.initialize()
   },
   methods: {

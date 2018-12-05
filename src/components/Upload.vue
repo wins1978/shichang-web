@@ -97,7 +97,7 @@ export default {
   components: {
   },
   created () {
-    this.pagination.rowsPerPage = 15
+    this.pagination.rowsPerPage = -1
     // this.post_test()
   },
   computed: {
