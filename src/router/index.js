@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Upload from '@/components/Upload'
 import Customer from '@/components/Customer'
+import Goods from '@/components/Goods'
 import Vuetify from 'vuetify'
 import zhHans from 'vuetify/es5/locale/zh-Hans'
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/Customer',
       name: 'Customer',
       component: Customer
+    },
+    {
+      path: '/Goods',
+      name: 'Goods',
+      component: Goods
     }
   ]
 })

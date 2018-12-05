@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer app permanent>
+      <v-navigation-drawer app permanent
+      >
         <v-toolbar flat>
           <v-list>
             <v-list-tile>
@@ -67,10 +68,11 @@ export default {
       ],
       items: [
         { title: '客户资料', page: 'Customer', icon: 'dashboard' },
-        { title: '石粉型号', page: 'Stone', icon: 'dashboard' },
+        { title: '石粉型号', page: 'Goods', icon: 'dashboard' },
         { title: '客户价格维护', page: 'Price', icon: 'dashboard' },
         { title: '客户预收款', page: 'Deposit', icon: 'dashboard' },
-        { title: '历史数据更新', page: 'FixData', icon: 'dashboard' }
+        { title: '历史数据更新', page: 'FixData', icon: 'dashboard' },
+        { title: '客户类型', page: 'CustomerType', icon: 'dashboard' }
       ],
       right: null
     }
