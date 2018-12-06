@@ -41,15 +41,6 @@
                    <v-flex xs12 sm6 md4>
                     <v-text-field :rules="dinamicRules" v-model="editedItem.CostAdvance" label="预付金额元"></v-text-field>
                   </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field :rules="dinamicRules" v-model="editedItem.CostAlert" label="警戒线(元)"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-switch
-                      :label="`是否预警: ${editedItem.NeedCostAdvance.toString()}`"
-                      v-model="editedItem.NeedCostAdvance"
-                    ></v-switch>
-                  </v-flex>
                 </v-layout>
               </v-container>
             </v-card-text>
@@ -80,8 +71,6 @@
           <td class="text-xs-left">{{ props.item.ContactName }}</td>
           <td class="text-xs-left">{{ props.item.Tel }}</td>
           <td class="text-xs-left">{{ props.item.CostAdvance }}</td>
-          <td class="text-xs-left">{{ props.item.CostAlert }}</td>
-          <td class="text-xs-left">{{ props.item.NeedCostAdvance }}</td>
           <td class="justify-left">
             <v-icon small class="mr-2" @click="editItem(props.item)">
               edit
@@ -105,7 +94,7 @@
 
 <script>
 export default {
-  name: 'Customer',
+  name: 'Vendor',
   inject: ['reload'],
   data: () => ({
     dialog: false,
@@ -127,8 +116,6 @@ export default {
       { text: '联系人', width: 160, value: 'ContactName' },
       { text: '联系电话', width: 140, value: 'Tel' },
       { text: '预付金额元', width: 120, value: 'CostAdvance' },
-      { text: '警戒线(元)', width: 120, value: 'CostAlert' },
-      { text: '是否预警', width: 60, value: 'NeedCostAdvance' },
       { text: '操作', value: 'name', sortable: false }
     ],
     desserts: [],
@@ -137,17 +124,13 @@ export default {
       Vendor: '',
       ContactName: '',
       Tel: '',
-      NeedCostAdvance: false,
-      CostAdvance: 0,
-      CostAlert: 0
+      CostAdvance: 0
     },
     defaultItem: {
       Vendor: '',
       ContactName: '',
       Tel: '',
-      NeedCostAdvance: false,
-      CostAdvance: 0,
-      CostAlert: 0
+      CostAdvance: 0
     }
   }),
 
@@ -191,11 +174,6 @@ export default {
     editItem (item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      if (this.editedItem.NeedCostAdvance === 'true') {
-        this.editedItem.NeedCostAdvance = true
-      } else {
-        this.editedItem.NeedCostAdvance = false
-      }
       this.isEditItem = true
       this.dialog = true
     },
@@ -276,11 +254,6 @@ export default {
     },
 
     save () {
-      if (this.editedItem.NeedCostAdvance === true) {
-        this.editedItem.NeedCostAdvance = 'true'
-      } else {
-        this.editedItem.NeedCostAdvance = 'false'
-      }
       if (this.editedIndex > -1) {
         this.vendor_update(this.editedItem)
       } else {

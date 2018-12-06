@@ -67,12 +67,11 @@ export default {
         ['自定义报表', 'people_outline']
       ],
       items: [
-        { title: '客户资料', page: 'Customer', icon: 'dashboard' },
         { title: '石粉型号', page: 'Goods', icon: 'dashboard' },
-        { title: '客户价格维护', page: 'Price', icon: 'dashboard' },
+        { title: '客户资料', page: 'Vendor', icon: 'dashboard' },
+        { title: '客户价格维护', page: 'VendorPrice', icon: 'dashboard' },
         { title: '客户预收款', page: 'Deposit', icon: 'dashboard' },
-        { title: '历史数据更新', page: 'FixData', icon: 'dashboard' },
-        { title: '客户类型', page: 'CustomerType', icon: 'dashboard' }
+        { title: '历史数据更新', page: 'FixData', icon: 'dashboard' }
       ],
       right: null
     }

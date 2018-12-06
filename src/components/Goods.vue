@@ -9,19 +9,9 @@
           inset
           vertical
         ></v-divider>
-        <v-card-title>
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="搜索过滤"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
-          <v-btn slot="activator" color="primary" dark class="mb-2">新增数据</v-btn>
+          <v-btn slot="activator" :disabled="true" color="primary" dark class="mb-2">新增数据</v-btn>
           <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
@@ -78,9 +68,6 @@
             <v-icon small class="mr-2" @click="editItem(props.item)">
               edit
             </v-icon>
-            <v-icon small @click="deleteItem(props.item)">
-              delete
-            </v-icon>
           </td>
         </template>
         <template slot="no-data">
@@ -97,8 +84,8 @@
 
 <script>
 export default {
-  name: 'Customer',
-  inject: ['reload'],
+  name: 'Goods',
+  // inject: ['reload'],
   data: () => ({
     dialog: false,
     rowsPerPageItems: [ 10, 15, 25, 100, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 } ],
@@ -198,7 +185,6 @@ export default {
     goods_insert (item) {
       var __this = this
       __this.errMessage = ''
-      item.OrderIndex = parseInt(item.OrderIndex)
       this.axios.post('http://localhost:8080/goods_insert', item)
         .then(function (response) {
           console.log(response.data)
@@ -236,7 +222,6 @@ export default {
     goods_update (item) {
       var __this = this
       __this.errMessage = ''
-      item.OrderIndex = parseInt(item.OrderIndex)
       this.axios.post('http://localhost:8080/goods_update', item)
         .then(function (response) {
           console.log(response.data)
