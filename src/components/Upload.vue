@@ -38,8 +38,9 @@
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.RowIndex }}</td>
-          <td class="text-xs-left">{{ props.item.Date }}</td>
           <td class="text-xs-left">{{ props.item.NumberFlag }}</td>
+          <td class="text-xs-left">{{ props.item.Date }}</td>
+          <td class="text-xs-left">{{ props.item.Time }}</td>
           <td class="text-xs-left">{{ props.item.CarNumber }}</td>
           <td class="text-xs-left">{{ props.item.ShopNumber }}</td>
           <td class="text-xs-left">{{ props.item.GrossWeight }}</td>
@@ -79,10 +80,11 @@ export default {
       selected: [],
       headers: [
         {text: '', width: 40, align: 'left', value: 'RowIndex'},
-        { text: '首次称重日期', width: 100, value: 'Date' },
         { text: '磅单编号', width: 120, value: 'NumberFlag' },
+        { text: '首次称重日期', width: 100, value: 'Date' },
+        { text: '毛重时间', width: 60, value: 'Time' },
         { text: '车号', width: 120, value: 'CarNumber' },
-        { text: '货物名称', width: 60, value: 'ShopNumber' },
+        { text: '货物名称', width: 80, value: 'ShopNumber' },
         { text: '毛重', width: 80, value: 'GrossWeight' },
         { text: '皮重', width: 80, value: 'TareWeight' },
         { text: '净重', width: 80, value: 'NetWeight' },
